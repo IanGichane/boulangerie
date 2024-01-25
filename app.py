@@ -9,6 +9,7 @@ from models import db
 from resources.user import Register,Login,refreshtokken
 from resources.productcategoryres import ProductCategoryResource
 from resources.order import OrderResource
+from resources.Products import Products
 from resources.ShoppingCartRes import ShoppingCartResource
 
 app = Flask(__name__)
@@ -26,7 +27,7 @@ jwt = JWTManager(app)
 api.add_resource(Register, '/register')
 api.add_resource(Login, '/login')
 api.add_resource(refreshtokken, '/refresh')
-# api.add_resource(Products, '/products', "/products/<int:id>")
+api.add_resource(Products, '/products', "/products/<int:id>")
 api.add_resource(ProductCategoryResource, '/categories', "/categories/<int:id>")
 api.add_resource(OrderResource, '/orders', "/orders/<int:id>")
 api.add_resource(ShoppingCartResource, '/carts', '/carts/<int:id>')

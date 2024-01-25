@@ -7,7 +7,8 @@ user_fields={
     "name":fields.String,
     "description":fields.String,
     "image":fields.String,
-    "price":fields.Integer
+    "price":fields.Integer,
+    "category_id":fields.Integer
 }
 
 response_field = {
@@ -19,6 +20,9 @@ class Products(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('name', required=True, help="username is required")
         parser.add_argument('description', required=True, help="Phone number is required")
+        parser.add_argument('image', required=True, help="Phone number is required")
+        parser.add_argument('price', required=True, help="Phone number is required")
+        parser.add_argument('category_id', required=True, help="Phone number is required")
         
         def get(self):
             products = Product.query.all()
