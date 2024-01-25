@@ -6,7 +6,7 @@ from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 
 from models import db
-from resources.user import Register,Login
+from resources.user import Register,Login,refreshtokken
 
 app = Flask(__name__)
 
@@ -22,6 +22,7 @@ jwt = JWTManager(app)
 
 api.add_resource(Register, '/register')
 api.add_resource(Login, '/login')
+api.add_resource(refreshtokken, '/refresh')
 
 if __name__ == '__main__':
     app.run(port=5556)

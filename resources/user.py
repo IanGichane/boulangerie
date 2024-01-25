@@ -67,4 +67,11 @@ class Login(Resource):
             
         return {"message": "Invalid email/password", "status": "fail"}
 
- # Access the identity of the current user with get_jwt_identity
+class refreshtokken(Resource):
+    @jwt_required(refresh=True)
+    def post(self):
+        current_user = get_jwt_identity()
+        new_token = create_access_token(identity=current_user)
+        return {
+            "access_token": new_token
+        }
