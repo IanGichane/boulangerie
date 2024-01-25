@@ -43,46 +43,28 @@ class Register(Resource):
             return {"message": "Unable to create account", "status": "fail"}
 
 class Login(Resource):
-    # parser = reqparse.RequestParser()
-    # parser.add_argument('email', required=True, help="Email is required")
-    # parser.add_argument('password', required=True, help="Password is required")
+    parser = reqparse.RequestParser()
+    parser.add_argument('email', required=True, help="Email is required")
+    parser.add_argument('password', required=True, help="Password is required")
 
-    # def post(self):
 
-        # data=Login.parser.parse_args()
-
-        # user =CustomerModel.query.filter_by(email= data['email']).first()
-
-        # if user:
-        #     is_password_correct = check_password_hash(user.password, data['password'])
-
-        #     if is_password_correct:
-        
-        #         return {"message": "login successful", "status":"success"}, 200
-            
-        #     else:
-        #        return {"message": "invalid email/password", "status":"fail"}, 403
-
-        # return {"message": "invalid email/password", "status":"fail"}, 403
-    
 
     def post(self):
         data = Login.parser.parse_args()
         user = CustomerModel.query.filter_by(email=data['email']).first()
 
-        if user and check_password_hash(user.password, data['password']):
-            if user.activated:
-                user_json = user.to_json()
-                access_token = create_access_token(identity=user.id, fresh=True)
+        if user:
+            is_password_correct = check_password_hash(user.password, data['password'])
+            if is_password_correct:
+                access_token = create_access_token(identity=user.id)
                 refresh_token = create_refresh_token(user.id)
                 return {
-                    "message": "Login successful",
-                    "status": "success",
                     "access_token": access_token,
-                    "refresh_token": refresh_token,
-                    "user": user_json,
-                }, 200
-            return {"message": "Login successful, but activation is required", "status": "success"}, 201
-        else:
-            return {"message": "Invalid email/password", "status": "fail"}, 403
-       
+                    "refresh_token": refresh_token
+                },200
+            return {"message":"User not authenticated"}
+            
+            
+        return {"message": "Invalid email/password", "status": "fail"}
+
+ # Access the identity of the current user with get_jwt_identity
