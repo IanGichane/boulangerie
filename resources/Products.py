@@ -47,7 +47,8 @@ class ProductResource(Resource):
         if not product:
             abort(404, error="productcategory not found")
 
-        product.name = data.get('name', product.name)  
+        product.name = data.get('name', product.name) 
+        product.price = data.get('price', product.price)  
 
         try:
             db.session.commit()
