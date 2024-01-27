@@ -11,6 +11,7 @@ from resources.productcategoryres import ProductCategoryResource
 from resources.order import OrderResource
 from resources.Products import ProductResource
 from resources.ShoppingCartRes import ShoppingCartResource
+from resources.cart import CartResource
 
 app = Flask(__name__)
 
@@ -31,6 +32,7 @@ api.add_resource(ProductResource, '/products', "/products/<int:id>")
 api.add_resource(ProductCategoryResource, '/categories', "/categories/<int:id>")
 api.add_resource(OrderResource, '/orders', "/orders/<int:id>")
 api.add_resource(ShoppingCartResource, '/carts', '/carts/<int:id>')
+api.add_resource(CartResource, '/cartItems', '/cartItems/<int:cart_id>')
 
 if __name__ == '__main__':
     app.run(port=5556)

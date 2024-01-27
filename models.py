@@ -50,3 +50,14 @@ class OrderModel(db.Model):
     product_id=db.Column(db.Integer, db.ForeignKey("product.id"))
     customer_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
+class CartItem(db.Model):
+    __tablename__='cartItems'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    image = db.Column(db.String(255), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    
+    
+
+
