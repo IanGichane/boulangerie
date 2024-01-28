@@ -59,15 +59,15 @@ class ProductResource(Resource):
             abort(500, error="Update unsuccessful")
 
 
-    # def delete(self, id):
-    #     productcategory = ProductCategoryModel.query.get(id)
-    #     if productcategory is None:
-    #         abort(404, error="Product not found")
+    def delete(self, id):
+        product = Product.query.get(id)
+        if product is None:
+            abort(404, error="Product not found")
 
-    #     try:
-    #         db.session.delete(productcategory)
-    #         db.session.commit()
-    #         return {"message": f"productcategory {id} deleted successfully"}
-    #     except Exception as e:
-    #         print(f"Error: {str(e)}")
-    #         abort(500, error=f"Deletion for productcategory {id} unsuccessful")
+        try:
+            db.session.delete(product)
+            db.session.commit()
+            return {"message": f"product {id} deleted successfully"}
+        except Exception as e:
+            print(f"Error: {str(e)}")
+            abort(500, error=f"Deletion for product {id} unsuccessful")
