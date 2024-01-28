@@ -20,9 +20,9 @@ response_field = {
 class Register(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('username', required=True, help="username is required")
-    # parser.add_argument('phone', required=True, help="Phone number is required")
-    # parser.add_argument('email', required=True, help="Email address is required")
-    # parser.add_argument('password', required=True, help="Password is required")
+    parser.add_argument('phone', required=True, help="Phone number is required")
+    parser.add_argument('email', required=True, help="Email address is required")
+    parser.add_argument('password', required=True, help="Password is required")
 
     @marshal_with(response_field)
     def post(self):
