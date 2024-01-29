@@ -1,5 +1,4 @@
 from flask import Flask
-import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_restful import  Api
@@ -16,8 +15,7 @@ from resources.cart import CartResource
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
-#postgresql://sweet_cakes_user:orJls9odtYOXjogHHwml6R6uQkROGu5G@dpg-cms0bng21fec73ciarrg-a.oregon-postgres.render.com/sweet_cakes
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config["JWT_SECRET_KEY"] = "super-secret" 
 CORS(app)
