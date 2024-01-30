@@ -3,6 +3,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token, jwt_re
 from flask_bcrypt import generate_password_hash, check_password_hash
 from models import CustomerModel, db
 
+
 user_fields={
     "id":fields.Integer,
     "username":fields.String,
@@ -11,11 +12,13 @@ user_fields={
     "phone":fields.Integer
 }
 
+
 response_field = {
     "message": fields.String,
     "status": fields.String,
     "user": fields.Nested(user_fields)
 }
+
 
 class Register(Resource):
     parser = reqparse.RequestParser()
@@ -24,15 +27,18 @@ class Register(Resource):
     parser.add_argument('email', required=True, help="Email address is required")
     parser.add_argument('password', required=True, help="Password is required")
 
+
     @marshal_with(response_field)
     def post(self):
         data=Register.parser.parse_args()
         data['password']=generate_password_hash(data['password'])
         user=CustomerModel(**data)
 
+
         email=CustomerModel.query.filter_by(email=data['email']).one_or_none()
         if email:
             return "Email exists"
+
 
         try:
             db.session.add(user)
@@ -42,6 +48,7 @@ class Register(Resource):
         except:
             return {"message": "Unable to create account", "status": "fail"}
 
+
 class Login(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('email', required=True, help="Email is required")
@@ -49,9 +56,13 @@ class Login(Resource):
 
 
 
+
+
+
     def post(self):
         data = Login.parser.parse_args()
         user = CustomerModel.query.filter_by(email=data['email']).first()
+
 
         if user:
             is_password_correct = check_password_hash(user.password, data['password'])
@@ -59,13 +70,16 @@ class Login(Resource):
                 access_token = create_access_token(identity=user.id)
                 refresh_token = create_refresh_token(user.id)
                 return {
+                    "status": "success",
+                    "message": "Login successful",
                     "access_token": access_token,
                     "refresh_token": refresh_token
                 },200
-            return {"message":"User not authenticated"}
-            
-            
+            return {"message":"invalid password try again", "status": "fail" }
+           
+           
         return {"message": "Invalid email/password", "status": "fail"}
+
 
 class refreshtokken(Resource):
     @jwt_required(refresh=True)
@@ -75,3 +89,4 @@ class refreshtokken(Resource):
         return {
             "access_token": new_token
         }
+
