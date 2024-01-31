@@ -25,7 +25,7 @@ api = Api(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
-api.add_resource(Register, '/register')
+api.add_resource(Register, '/register',"/register/<int:id>")
 api.add_resource(Login, '/login')
 api.add_resource(refreshtokken, '/refresh')
 api.add_resource(ProductResource, '/products', "/products/<int:id>")

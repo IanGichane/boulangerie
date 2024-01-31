@@ -1,4 +1,4 @@
-from flask_restful import Resource, reqparse, fields, marshal_with
+from flask_restful import Resource, reqparse, fields, marshal_with, abort
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_identity
 from flask_bcrypt import generate_password_hash, check_password_hash
 from models import CustomerModel, db
@@ -28,6 +28,18 @@ class Register(Resource):
     parser.add_argument('password', required=True, help="Password is required")
 
 
+    @marshal_with(user_fields)
+    def get(self, id=None):
+        if id:
+            register = CustomerModel.query.filter_by(id=id).first()
+            if register is not None:
+                return register
+            else:
+                abort(404, error="User not found")
+        else:
+            registers = CustomerModel.query.all()
+            return registers
+        
     @marshal_with(response_field)
     def post(self):
         data=Register.parser.parse_args()
@@ -53,8 +65,6 @@ class Login(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('email', required=True, help="Email is required")
     parser.add_argument('password', required=True, help="Password is required")
-
-
 
 
 
